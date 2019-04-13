@@ -1,0 +1,55 @@
+import { Injectable, Logger, HttpService } from '@nestjs/common';
+import * as FB from 'fb';
+
+@Injectable()
+export class FbService {
+    accessToken: string;
+    tokenType: string;
+    constructor(private readonly httpService: HttpService) {
+
+    }
+
+    async fbLogin() {
+        return this.httpService.get('https://graph.facebook.com/oauth/access_token?', {
+            params: {
+                client_id: '859178397757750',
+                client_secret: '3a65dc47a092fd2b8a591047de7595ac',
+                grant_type: 'client_credentials',
+            },
+        }).toPromise().then(r => {
+            this.accessToken = r.data.access_token;
+            this.tokenType = r.data.type;
+        });
+    }
+    async getToken(): Promise<any> {
+        if (this.accessToken) {
+            return this.accessToken;
+        } else {
+            await this.fbLogin();
+            return this.accessToken;
+        }
+
+    }
+
+    async getPlaces(query): Promise<any> {
+        if (!this.accessToken) {
+            try {
+                await this.getToken();
+
+            } catch (err) {
+                Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+            }
+        }
+        Logger.log(query);
+        return this.httpService.get('https://graph.facebook.com/v3.2/search?', {
+            params: {
+                access_token: this.accessToken,
+                type: 'place',
+                q: query,
+            },
+        }).toPromise().then(r => r.data).catch(err => {
+            Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+        });
+
+    }
+}
