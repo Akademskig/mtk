@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Query, Param, Logger, Next, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Res, Query, Param, Logger, Next, UsePipes, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiService } from './app.service';
 import { FbService } from './services/fb.service';
 import { AutocompleteQuery } from './models/autocompleteQuery.model';
@@ -9,27 +9,29 @@ export class AppController {
   constructor(private readonly appService: ApiService, private fbService: FbService ) { }
 
   @Get('/api/profile_autocomplete')
-  async getProfileAutocomplete(@Query() query: AutocompleteQuery, @Res() res, @Next() next): Promise<any> {
+  async getProfileAutocomplete(@Query() query: AutocompleteQuery): Promise<any> {
     try {
       const r = await this.appService.getProfileAutocomplete(query.query, query.type, query.currentValues);
-      res.status(200);
-      res.json(r);
+      return r;
     } catch (err) {
-      res.status(400);
-      res.send(err.message);
-      Logger.error(err.message, err.stack, 'getProfileAutocomplete');
+      if (err.statusCode) {
+        throw new HttpException(err.message, err.statusCode);
+      } else {
+        throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
   }
   @Get('/api/place_info/:id')
-  async getPlaceInfo(@Param('id', new ParseIntPipe()) id, @Res() res ): Promise < any > {
+  async getPlaceInfo(@Param('id', new ParseIntPipe()) id): Promise < any > {
     try {
       const r = await this.fbService.getPlaceInfo(id);
-      res.status(200);
-      res.json(r);
+      return r;
     } catch (err) {
-      res.status(400);
-      res.send(err.message);
-      Logger.error(err.message, err.stack, 'gePlaceInfo');
+      if (err.statusCode) {
+        throw new HttpException(err.message, err.statusCode);
+      } else {
+        throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
   }
 }
