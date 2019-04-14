@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Query, Param } from '@nestjs/common';
+import { Controller, Get, Res, Query, Param, HttpStatus, HttpException } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AutocompleteQuery } from './models/autocompleteQuery.model';
 import { Response } from 'express';
@@ -9,33 +9,37 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Get('/api/profile_autocomplete')
-  async getProfiles(@Query() query: AutocompleteQuery, @Res() res: Response) {
+  async getProfiles(@Query() query: AutocompleteQuery) {
     let currentValues;
     try {
       currentValues = this.validateCurrentValues(query.currentValues);
-
     } catch (err) {
-      res.status(400);
-      res.json(err.message);
-      return;
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
     delete query.currentValues;
     try {
       const r = await this.appService.getProfiles(query, currentValues);
-      res.json(r);
+      return r;
     } catch (err) {
-      res.status(400).json(err.message);
+      if (err.statusCode) {
+        throw new HttpException(err.message, err.statusCode);
+      } else {
+        throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
+
   }
   @Get('/api/place_info/:id')
-  async getPlaceInfo(@Param('id', new ParseIntPipe()) id, @Res() res: Response): Promise<any> {
+  async getPlaceInfo(@Param('id', new ParseIntPipe()) id): Promise<any> {
     try {
       const r = await this.appService.getPlaceInfo(id);
-      res.status(200);
-      res.json(r);
+      return r;
     } catch (err) {
-      res.status(400);
-      res.json(err);
+      if (err.statusCode) {
+        throw new HttpException(err.message, err.statusCode);
+      } else {
+        throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
   }
 
