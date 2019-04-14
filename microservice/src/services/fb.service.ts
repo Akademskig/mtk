@@ -40,12 +40,30 @@ export class FbService {
                 Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
             }
         }
-        Logger.log(query);
         return this.httpService.get('https://graph.facebook.com/v3.2/search?', {
             params: {
                 access_token: this.accessToken,
                 type: 'place',
                 q: query,
+            },
+        }).toPromise().then(r => r.data).catch(err => {
+            Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+        });
+
+    }
+    async getPlaceInfo(id: number): Promise<any> {
+        if (!this.accessToken) {
+            try {
+                await this.getToken();
+
+            } catch (err) {
+                Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+            }
+        }
+        return this.httpService.get(`https://graph.facebook.com/v3.2/${id}?`, {
+            params: {
+                fields: 'name, about, cover',
+                access_token: this.accessToken,
             },
         }).toPromise().then(r => r.data).catch(err => {
             Logger.error(err.message, err.stack, 'Fb Service', true); throw err;

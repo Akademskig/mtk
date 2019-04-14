@@ -25,7 +25,11 @@ export class ApiService {
       Logger.error(err, err.stack, 'ApiService - controller');
     }
   }
+
   filterPlaces(values: any, currentValues: number[]) {
+    if (!currentValues) {
+      return values;
+    }
     const filtered = values.data.filter(v => !currentValues.includes(v.id));
     delete values.data;
     return Object.assign(values, { data: filtered });
