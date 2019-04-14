@@ -15,7 +15,13 @@ export default class Client extends React.Component {
   }
 
   onInputChange = async ($e) => {
-    const data = await fetchProfiles($e.target.value)
+    let data
+    try {
+      data = await fetchProfiles($e.target.value)
+    }
+    catch (err) {
+      return
+    }
     this.setState({
       values: data.data
     })
@@ -27,7 +33,7 @@ export default class Client extends React.Component {
     let data
     try {
       data = await fetchProfiles($e.target.value, this.state.selectedItemsIds, "facebook")
-      if(data.error)
+      if (data.error)
         return
     }
     catch (err) {
@@ -39,32 +45,37 @@ export default class Client extends React.Component {
     })
 
   }
-  onSelect = ($e) => {
-    const item = this.state.values.filter(v => v.id === $e)
+  onSelect = async ($e) => {
+    const data = await fetchPlaceInfo($e)
     this.setState({
       values: this.state.values.filter(v => v.id !== $e),
-      selectedItems: this.state.selectedItems.concat(item[0]),
+      selectedItems: this.state.selectedItems.concat(data),
       selectedItemsIds: this.state.selectedItemsIds.concat($e)
     })
+
   }
   render() {
     return (
-      <div>
-        <label htmlFor="profile" > Input profile bitch </label>
-        <Autocomplete
-          getItemValue={(item) => item.id}
-          items={this.state.values}
-          renderItem={(item, isHighlighted) =>
-            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-              {item.name}
-            </div>
-          }
-          value={this.state.value}
-          onChange={this.onChange.bind(this)}
-          onSelect={this.onSelect.bind(this)}
-        />
+      <div id="main">
+        <div className="autocomplete">
+          <label htmlFor="profile" > Search Place </label>
+          <Autocomplete
+            getItemValue={(item) => item.id}
+            items={this.state.values}
+            renderItem={(item, isHighlighted) =>
+              <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                {item.name}
+              </div>
+            }
+            value={this.state.value}
+            onChange={this.onChange.bind(this)}
+            onSelect={this.onSelect.bind(this)}
+          />
+        </div>
         <SelectedList items={this.state.selectedItems}></SelectedList>
-      </div>)
+
+      </div>
+    )
   }
 }
 
@@ -73,14 +84,19 @@ const SelectedList = (props) => {
 
     <div className="itemsList">
       {props.items.length > 0 && props.items.map((item, i) =>
-        (<div>{item.name}</div>)
+        (<div key={i}>
+          <h3>{item.name}</h3>
+          <p>{item.about}</p>
+          <img alt={item.name} src={item.cover ? item.cover.source : "#"}></img>
+
+        </div>)
       )}
     </div>
   )
 }
 const fetchProfiles = (query, currentValues, type) => {
-  const url= new URL(`http://127.0.0.1:3002/api/profile_autocomplete`)
-  const params={
+  const url = new URL(`http://127.0.0.1:3002/api/profile_autocomplete`)
+  const params = {
     query,
     currentValues,
     type
@@ -90,5 +106,13 @@ const fetchProfiles = (query, currentValues, type) => {
   return fetch(url, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
-  }).then(r => r.json()).catch(err => {console.error("An error occurred: ", err);throw err})
+  }).then(r => r.json()).catch(err => { console.error("An error occurred: ", err); throw err })
+}
+
+const fetchPlaceInfo = (id) => {
+  const url = new URL(`http://127.0.0.1:3002/api/place_info/${id}`)
+  return fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  }).then(r => r.json()).catch(err => { console.error("An error occurred: ", err); throw err })
 }
