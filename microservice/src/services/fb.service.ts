@@ -5,9 +5,7 @@ import * as FB from 'fb';
 export class FbService {
     accessToken: string;
     tokenType: string;
-    constructor(private readonly httpService: HttpService) {
-
-    }
+    constructor(private readonly httpService: HttpService) {}
 
     async fbLogin() {
         return this.httpService.get('https://graph.facebook.com/oauth/access_token?', {
@@ -28,16 +26,14 @@ export class FbService {
             await this.fbLogin();
             return this.accessToken;
         }
-
     }
-
     async getPlaces(query): Promise<any> {
         if (!this.accessToken) {
             try {
                 await this.getToken();
 
             } catch (err) {
-                Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+                Logger.error(err.message, err.stack, 'Fb Service - get token', true); throw err;
             }
         }
         return this.httpService.get('https://graph.facebook.com/v3.2/search?', {
@@ -47,7 +43,7 @@ export class FbService {
                 q: query,
             },
         }).toPromise().then(r => r.data).catch(err => {
-            Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+            Logger.error(err.message, err.stack, 'Fb Service - get places', true); throw err;
         });
 
     }
@@ -57,7 +53,7 @@ export class FbService {
                 await this.getToken();
 
             } catch (err) {
-                Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+                Logger.error(err.message, err.stack, 'Fb Service - get token', true); throw err;
             }
         }
         return this.httpService.get(`https://graph.facebook.com/v3.2/${id}?`, {
@@ -66,7 +62,7 @@ export class FbService {
                 access_token: this.accessToken,
             },
         }).toPromise().then(r => r.data).catch(err => {
-            Logger.error(err.message, err.stack, 'Fb Service', true); throw err;
+            Logger.error(err.message, err.stack, 'Fb Service - get place info', true); throw err;
         });
 
     }
