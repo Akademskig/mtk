@@ -3,9 +3,9 @@ import * as FB from 'fb';
 import { FbService } from './services/fb.service';
 
 @Injectable()
-export class ApiService {
+export class AppService {
   constructor(private fbService: FbService) { }
-  async getProfileAutocomplete(query: string, type: string, currentValues: number[]): Promise<any> {
+  async getPlacesAutocomplete(query: string, type: string, currentValues: number[]): Promise<any> {
     let places = [];
     switch (type) {
       case 'facebook':
@@ -18,12 +18,7 @@ export class ApiService {
   }
 
   fbApi(query) {
-    try {
       return this.fbService.getPlaces(query);
-
-    } catch (err) {
-      Logger.error(err, err.stack, 'ApiService - controller');
-    }
   }
 
   filterPlaces(values: any, currentValues: number[]) {
