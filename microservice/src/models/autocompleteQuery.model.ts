@@ -1,12 +1,18 @@
 
-import {  IsString, IsNotEmpty, IsArray } from 'class-validator';
+import {  IsString, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
 
 export class AutocompleteQuery {
     @IsString()
     @IsNotEmpty()
     query: string;
+    @IsArray()
     currentValues: number[];
     @IsString()
     @IsNotEmpty()
     type: string;
+    constructor(type: string, query: string, currentValues: number[]) {
+        this.query = query;
+        this.type = type;
+        this.currentValues = currentValues;
+    }
 }
