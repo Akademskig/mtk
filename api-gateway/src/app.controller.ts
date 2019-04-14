@@ -9,7 +9,7 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Get('/api/profile_autocomplete')
-  async getProfiles(@Query() query: AutocompleteQuery) {
+  async getPlaces(@Query() query: AutocompleteQuery) {
     let currentValues;
     try {
       currentValues = this.validateCurrentValues(query.currentValues);

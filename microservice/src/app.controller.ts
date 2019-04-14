@@ -1,17 +1,17 @@
 import { Controller, Get, Res, Query, Param, Logger, Next, UsePipes, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
-import { ApiService } from './app.service';
+import { AppService } from './app.service';
 import { FbService } from './services/fb.service';
 import { AutocompleteQuery } from './models/autocompleteQuery.model';
 import { ParseIntPipe } from './pipes/parseInt.pipe';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: ApiService, private fbService: FbService ) { }
+  constructor(private readonly appService: AppService, private fbService: FbService ) { }
 
   @Get('/api/profile_autocomplete')
-  async getProfileAutocomplete(@Query() query: AutocompleteQuery): Promise<any> {
+  async getPlacesAutocomplete(@Query() query: AutocompleteQuery): Promise<any> {
     try {
-      const r = await this.appService.getProfileAutocomplete(query.query, query.type, query.currentValues);
+      const r = await this.appService.getPlacesAutocomplete(query.query, query.type, query.currentValues);
       return r;
     } catch (err) {
       if (err.statusCode) {

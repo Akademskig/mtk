@@ -24,7 +24,7 @@ describe('AppController', () => {
       const query = new AutocompleteQuery('facebook', 'que', '1,2,3');
       const res = new Places([new PlaceItem(1, 'praćka')]);
       jest.spyOn(appService, 'getPlaces').mockResolvedValue(Promise.resolve(res));
-      const result = await appController.getProfiles(query);
+      const result = await appController.getPlaces(query);
       expect(result).toMatchObject(expect.objectContaining({
         data: [{
           id: expect.any(Number),
