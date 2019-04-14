@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class AppService {
   constructor(private readonly httpService: HttpService) { }
-  async getProfiles(query: any, currentValues: number[]) {
+  async getPlaces(query: any, currentValues: number[]) {
     return this.httpService.get('http://127.0.0.1:3001/api/profile_autocomplete', {
       params: {
         query: query.query,

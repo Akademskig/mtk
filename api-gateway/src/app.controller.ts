@@ -18,7 +18,7 @@ export class AppController {
     }
     delete query.currentValues;
     try {
-      const r = await this.appService.getProfiles(query, currentValues);
+      const r = await this.appService.getPlaces(query, currentValues);
       return r;
     } catch (err) {
       if (err.statusCode) {
