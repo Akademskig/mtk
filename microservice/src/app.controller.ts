@@ -8,15 +8,17 @@ import { ParseIntPipe } from './pipes/parseInt.pipe';
 export class AppController {
   constructor(private readonly appService: AppService, private fbService: FbService ) { }
 
-  @Get('/api/profile_autocomplete')
+  @Get('/api/places_autocomplete')
   async getPlacesAutocomplete(@Query() query: AutocompleteQuery): Promise<any> {
     try {
       const r = await this.appService.getPlacesAutocomplete(query.query, query.type, query.currentValues);
       return r;
     } catch (err) {
-      if (err.response) {
-        throw new HttpException(err.response.data.error, err.response.data.statusCode);
-      } else {
+      if (err.getResponse) {
+        throw new HttpException(err.getResponse(), err.getStatus());
+      } else  if (err.response.statusText && err.response.status) {
+        throw new HttpException(err.response.statusText, err.response.status);
+      }  else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
@@ -27,8 +29,11 @@ export class AppController {
       const r = await this.fbService.getPlaceInfo(id);
       return r;
     } catch (err) {
-      if (err.response) {
-        throw new HttpException(err.response.data.error, err.response.data.statusCode);
+      // tslint:disable-next-line:no-console
+      if (err.getResponse) {
+        throw new HttpException(err.getResponse(), err.getStatus());
+      } else  if (err.response.statusText && err.response.status) {
+        throw new HttpException(err.response.statusText, err.response.status);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }

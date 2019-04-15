@@ -1,4 +1,4 @@
-import { Injectable, Logger, HttpService } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import * as FB from 'fb';
 import { FbService } from './services/fb.service';
 
@@ -12,7 +12,7 @@ export class AppService {
         places = await this.fbApi(query);
         break;
       default:
-        return;
+        throw new HttpException('Api not implemented', HttpStatus.NOT_IMPLEMENTED);
     }
     return this.filterPlaces(places, currentValues);
   }
