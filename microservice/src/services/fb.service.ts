@@ -27,7 +27,7 @@ export class FbService {
             return this.accessToken;
         }
     }
-    async getPlaces(query): Promise<any> {
+    async getPlaces(query: string): Promise<any> {
         if (!this.accessToken) {
             try {
                 await this.getToken();
