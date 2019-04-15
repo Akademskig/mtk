@@ -22,7 +22,7 @@ export class AppService {
   }
 
   filterPlaces(values: any, currentValues: number[]) {
-    if (!currentValues) {
+    if (!currentValues || currentValues.length === 0) {
       return values;
     }
     const filtered = values.data.filter(v => !currentValues.includes(v.id));

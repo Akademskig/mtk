@@ -14,8 +14,8 @@ export class AppController {
       const r = await this.appService.getPlacesAutocomplete(query.query, query.type, query.currentValues);
       return r;
     } catch (err) {
-      if (err.statusCode) {
-        throw new HttpException(err.message, err.statusCode);
+      if (err.response) {
+        throw new HttpException(err.response.data.error, err.response.data.statusCode);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }
@@ -27,8 +27,8 @@ export class AppController {
       const r = await this.fbService.getPlaceInfo(id);
       return r;
     } catch (err) {
-      if (err.statusCode) {
-        throw new HttpException(err.message, err.statusCode);
+      if (err.response) {
+        throw new HttpException(err.response.data.error, err.response.data.statusCode);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }

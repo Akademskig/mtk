@@ -5,7 +5,6 @@ export class AutocompleteQuery {
     @IsString()
     @IsNotEmpty()
     query: string;
-    @IsArray()
     currentValues: number[];
     @IsString()
     @IsNotEmpty()
