@@ -14,18 +14,7 @@ export default class Client extends React.Component {
     }
   }
 
-  onInputChange = async ($e) => {
-    let data
-    try {
-      data = await fetchProfiles($e.target.value)
-    }
-    catch (err) {
-      return
-    }
-    this.setState({
-      values: data.data
-    })
-  }
+
   onChange = async ($e) => {
     this.setState({
       value: $e.target.value
@@ -33,20 +22,27 @@ export default class Client extends React.Component {
     let data
     try {
       data = await fetchProfiles($e.target.value, this.state.selectedItemsIds, "facebook")
-      if (data.error)
+      if (data.statusCode)
         return
     }
     catch (err) {
       return
     }
-
     this.setState({
       values: data.data
     })
 
   }
   onSelect = async ($e) => {
-    const data = await fetchPlaceInfo($e)
+    let data
+    try {
+      data = await fetchPlaceInfo($e)
+      if (data.statusCode)
+        return
+    }
+    catch (err) {
+      return
+    }
     this.setState({
       values: this.state.values.filter(v => v.id !== $e),
       selectedItems: this.state.selectedItems.concat(data),
@@ -84,17 +80,18 @@ const SelectedList = (props) => {
 
     <div className="itemsList">
       {props.items.length > 0 && props.items.map((item, i) =>
-        (<div key={i}>
+        (<div className="content" key={i}>
           <h3>{item.name}</h3>
-          <p>{item.about}</p>
-          <img alt={item.name} src={item.cover ? item.cover.source : "#"}></img>
-
+          <div>
+            <p>{item.about}</p>
+            <img alt={item.name} src={item.cover ? item.cover.source : "#"}></img>
+          </div>
         </div>)
       )}
     </div>
   )
 }
-const fetchProfiles = (query, currentValues, type) => {
+const fetchProfiles = async (query, currentValues, type) => {
   const url = new URL(`http://127.0.0.1:3002/api/profile_autocomplete`)
   const params = {
     query,
