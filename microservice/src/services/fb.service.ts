@@ -1,5 +1,4 @@
 import { Injectable, Logger, HttpService } from '@nestjs/common';
-import * as FB from 'fb';
 
 @Injectable()
 export class FbService {

@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from '../controllers/app.controller';
 import { AppService } from './app.service';
-import { HttpService, HttpModule, Res, Logger } from '@nestjs/common';
 import { AutocompleteQuery } from '../models/autocompleteQuery.model';
 import { Places, PlaceItem, PlaceInfo } from '../models/places.model';
 

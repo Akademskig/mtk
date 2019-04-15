@@ -1,5 +1,5 @@
 
-import {  IsString, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
+import {  IsString, IsNotEmpty } from 'class-validator';
 
 export class AutocompleteQuery {
     @IsString()

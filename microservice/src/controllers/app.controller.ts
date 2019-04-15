@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Query, Param, Logger, Next, UsePipes, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Query, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { AppService } from '../services/app.service';
 import { FbService } from '../services/fb.service';
 import { AutocompleteQuery } from '../models/autocompleteQuery.model';
