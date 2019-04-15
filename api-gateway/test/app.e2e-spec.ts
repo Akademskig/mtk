@@ -8,16 +8,25 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+    .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
-
-  it('/ (GET)', () => {
+  it('GET /api/places_autocomplete', () => {
     return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+      .get('/api/places_autocomplete/?type=facebook&query=sadufa&currentValues=')
+      .expect(200);
+  });
+  it('GET /api/place_info/:id', () => {
+    return request(app.getHttpServer())
+      .get('/api/place_info/394549924374992')
+      .expect(200);
+  });
+  it('GET /api/place_info/:id', () => {
+    return request(app.getHttpServer())
+      .get('/api/place_info/2')
+      .expect(400);
   });
 });
