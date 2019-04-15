@@ -21,13 +21,12 @@ export class AppController {
       const r = await this.appService.getPlaces(query, currentValues);
       return r;
     } catch (err) {
-      if (err.statusCode) {
-        throw new HttpException(err.message, err.statusCode);
+      if (err.response) {
+        throw new HttpException(err.response.data.error, err.response.data.statusCode);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
-
   }
   @Get('/api/place_info/:id')
   async getPlaceInfo(@Param('id', new ParseIntPipe()) id): Promise<any> {
@@ -35,8 +34,8 @@ export class AppController {
       const r = await this.appService.getPlaceInfo(id);
       return r;
     } catch (err) {
-      if (err.statusCode) {
-        throw new HttpException(err.message, err.statusCode);
+      if (err.response) {
+        throw new HttpException(err.response.data.error, err.response.data.statusCode);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }
@@ -47,19 +46,18 @@ export class AppController {
   root(@Res() res: Response) {
     res.status(200);
     res.sendFile('index.html');
-
   }
 
   validateCurrentValues(currentValues: string): number[] {
     if (currentValues.length === 0) {
-      return null;
+      return [];
     }
     let arr;
     try {
       arr = currentValues.split(',');
 
     } catch (err) {
-      throw new Error('Validation error!');
+      throw new HttpException('Validation error!', HttpStatus.BAD_REQUEST);
     }
     const nums: number[] = [];
 
@@ -67,7 +65,7 @@ export class AppController {
       const val = parseInt(element, 10);
       if (!isNaN(val)) {
         nums.push(val);
-      } else { throw new Error('Validation error!'); }
+      } else { throw new HttpException('Validation error!', HttpStatus.BAD_REQUEST); }
     });
 
     return nums;

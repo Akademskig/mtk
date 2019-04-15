@@ -15,7 +15,7 @@ export class AppService {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).toPromise().then(r => r.data).catch(err => { Logger.error(err.message, err.stack, 'ApiService', true); throw err; });
+    }).toPromise().then(r => r.data).catch(err => { Logger.error(err.message, err.stack, 'AppService - getPlaces', true); throw err; });
 
   }
   async getPlaceInfo(id: number) {
@@ -23,7 +23,7 @@ export class AppService {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).toPromise().then(r => r.data).catch(err => { Logger.error(err.message, err.stack, 'ApiService', true); throw err; });
+    }).toPromise().then(r => r.data).catch(err => { Logger.error(err.message, err.stack, 'ApiService - getPlaceInfo', true); throw err; });
 
   }
 
