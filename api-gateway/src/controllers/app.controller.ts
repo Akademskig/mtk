@@ -1,8 +1,8 @@
 import { Controller, Get, Res, Query, Param, HttpStatus, HttpException } from '@nestjs/common';
-import { AppService } from './app.service';
-import { AutocompleteQuery } from './models/autocompleteQuery.model';
+import { AppService } from '../services/app.service';
+import { AutocompleteQuery } from '../models/autocompleteQuery.model';
 import { Response } from 'express';
-import { ParseIntPipe } from './pipes/parseInt.pipe';
+import { ParseIntPipe } from '../pipes/parseInt.pipe';
 
 @Controller()
 export class AppController {

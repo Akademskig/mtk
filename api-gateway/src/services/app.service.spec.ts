@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
+import { AppController } from '../controllers/app.controller';
 import { AppService } from './app.service';
 import { HttpService, HttpModule, Res, Logger } from '@nestjs/common';
-import { AutocompleteQuery } from './models/autocompleteQuery.model';
-import { Places, PlaceItem, PlaceInfo } from './models/places.model';
+import { AutocompleteQuery } from '../models/autocompleteQuery.model';
+import { Places, PlaceItem, PlaceInfo } from '../models/places.model';
 
 jest.mock('./app.service');
 describe('AppService', () => {

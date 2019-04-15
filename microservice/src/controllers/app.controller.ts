@@ -1,8 +1,8 @@
 import { Controller, Get, Res, Query, Param, Logger, Next, UsePipes, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
-import { AppService } from './app.service';
-import { FbService } from './services/fb.service';
-import { AutocompleteQuery } from './models/autocompleteQuery.model';
-import { ParseIntPipe } from './pipes/parseInt.pipe';
+import { AppService } from '../services/app.service';
+import { FbService } from '../services/fb.service';
+import { AutocompleteQuery } from '../models/autocompleteQuery.model';
+import { ParseIntPipe } from '../pipes/parseInt.pipe';
 
 @Controller()
 export class AppController {

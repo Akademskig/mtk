@@ -1,6 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import * as FB from 'fb';
-import { FbService } from './services/fb.service';
+import { FbService } from './fb.service';
 
 @Injectable()
 export class AppService {

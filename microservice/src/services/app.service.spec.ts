@@ -1,13 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
+import { AppController } from '../controllers/app.controller';
 import { AppService } from './app.service';
-import { AutocompleteQuery } from './models/autocompleteQuery.model';
-import { Places, PlaceItem, PlaceInfo } from './models/places.model';
-import { FbService } from './services/fb.service';
-import { HttpException } from '@nestjs/common';
+import { AutocompleteQuery } from '../models/autocompleteQuery.model';
+import { Places, PlaceItem, PlaceInfo } from '../models/places.model';
+import { FbService } from './fb.service';
 
 jest.mock('./app.service');
-jest.mock('./services/fb.service');
+jest.mock('./fb.service');
 describe('AppService', () => {
     let appService: AppService;
     beforeEach(async () => {
