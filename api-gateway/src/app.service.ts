@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export class AppService {
   constructor(private readonly httpService: HttpService) { }
   async getPlaces(query: any, currentValues: number[]) {
-    return this.httpService.get('http://127.0.0.1:3001/api/profile_autocomplete', {
+    return this.httpService.get('http://127.0.0.1:3001/api/places_autocomplete', {
       params: {
         query: query.query,
         type: query.type,

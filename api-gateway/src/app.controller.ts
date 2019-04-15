@@ -8,7 +8,7 @@ import { ParseIntPipe } from './pipes/parseInt.pipe';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get('/api/profile_autocomplete')
+  @Get('/api/places_autocomplete')
   async getPlaces(@Query() query: AutocompleteQuery) {
     let currentValues;
     try {
@@ -21,8 +21,10 @@ export class AppController {
       const r = await this.appService.getPlaces(query, currentValues);
       return r;
     } catch (err) {
-      if (err.response) {
-        throw new HttpException(err.response.data.error, err.response.data.statusCode);
+      if (err.getResponse) {
+        throw new HttpException(err.getResponse(), err.getStatus());
+      } else  if (err.response.statusText && err.response.status) {
+        throw new HttpException(err.response.statusText, err.response.status);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }
@@ -34,8 +36,10 @@ export class AppController {
       const r = await this.appService.getPlaceInfo(id);
       return r;
     } catch (err) {
-      if (err.response) {
-        throw new HttpException(err.response.data.error, err.response.data.statusCode);
+      if (err.getResponse) {
+        throw new HttpException(err.getResponse(), err.getStatus());
+      }  else  if (err.response.statusText && err.response.status) {
+        throw new HttpException(err.response.statusText, err.response.status);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
       }
