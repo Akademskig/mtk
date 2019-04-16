@@ -92,7 +92,7 @@ const SelectedList = (props) => {
   )
 }
 const fetchProfiles = async (query, currentValues, type) => {
-  const url = new URL(`http://127.0.0.1:3002/api/profile_autocomplete`)
+  const url = new URL(`http://127.0.0.1:3002/api/places_autocomplete`)
   const params = {
     query,
     currentValues,

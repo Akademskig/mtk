@@ -1,0 +1,42 @@
+FROM node:8.11.3-slim AS appbase
+LABEL maintainer="uniqCast <developer@uniqcast.com>"
+
+RUN apt-get update && apt-get install -y \
+        mediainfo \
+        vim \
+        && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV NODE_ENV production
+
+WORKDIR /opt/content-manager
+
+CMD ["npm", "start"]
+
+FROM appbase AS build
+
+RUN apt-get update && apt-get install -y \
+        build-essential \
+        git \
+        python \
+        && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+COPY package.json package-lock.json ./
+COPY cmadmin/package.json cmadmin/package-lock.json ./cmadmin/
+
+RUN npm install && \
+    cd cmadmin && \
+    NODE_ENV= npm install
+
+COPY cmadmin ./cmadmin
+
+RUN cd cmadmin && npm run build
+
+FROM appbase
+
+COPY --from=build /build/node_modules ./node_modules
+COPY . ./
+COPY --from=build /build/cmadmin/dist ./cmadmin/dist
