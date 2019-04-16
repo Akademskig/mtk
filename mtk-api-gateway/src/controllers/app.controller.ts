@@ -30,10 +30,10 @@ export class AppController {
       }
     }
   }
-  @Get('/api/place_info/:id')
-  async getPlaceInfo(@Param('id', new ParseIntPipe()) id): Promise<any> {
+  @Get('/api/place_info/:type/:id')
+  async getPlaceInfo(@Param('id', new ParseIntPipe()) id, @Param('type') type): Promise<any> {
     try {
-      const r = await this.appService.getPlaceInfo(id);
+      const r = await this.appService.getPlaceInfo(id, type);
       return r;
     } catch (err) {
       if (err.getResponse) {

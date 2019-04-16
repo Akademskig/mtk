@@ -19,14 +19,19 @@ describe('AppController (e2e)', () => {
       .get('/api/places_autocomplete/?type=facebook&query=sadufa&currentValues=')
       .expect(200);
   });
-  it('GET /api/place_info/:id', () => {
+  it('GET /api/place_info/facebook/394549924374992', () => {
     return request(app.getHttpServer())
-      .get('/api/place_info/394549924374992')
+      .get('/api/place_info/facebook/394549924374992')
       .expect(200);
   });
-  it('GET /api/place_info/:id', () => {
+  it('GET /api/place_info/facebook/2', () => {
     return request(app.getHttpServer())
-      .get('/api/place_info/2')
+      .get('/api/place_info/facebook/2')
       .expect(400);
+  });
+  it('GET /api/place_info/youtube/394549924374992', () => {
+    return request(app.getHttpServer())
+      .get('/api/place_info/youtube/394549924374992')
+      .expect(501);
   });
 });

@@ -29,7 +29,7 @@ describe('AppService', () => {
         it('should return a place information data', async () => {
             const res = new PlaceInfo(1, 'praćka');
             jest.spyOn(appService, 'getPlaceInfo').mockResolvedValue(Promise.resolve(res));
-            const result = await appService.getPlaceInfo(1);
+            const result = await appService.getPlaceInfo(1, 'facebook');
             expect(result).toMatchObject(expect.objectContaining(
                 res,
             ));
