@@ -8,7 +8,7 @@ export class AppService {
     let places = [];
     switch (type) {
       case 'facebook':
-        places = await this.fbApi(query);
+        places = await this.fbService.getPlaces(query);
         break;
       default:
         throw new HttpException('Api not implemented', HttpStatus.NOT_IMPLEMENTED);
@@ -16,8 +16,13 @@ export class AppService {
     return this.filterPlaces(places, currentValues);
   }
 
-  fbApi(query) {
-      return this.fbService.getPlaces(query);
+  getPlaceInfo(id: number, type: string) {
+    switch (type) {
+      case 'facebook':
+        return this.fbService.getPlaceInfo(id);
+      default:
+        throw new HttpException('Api not implemented', HttpStatus.NOT_IMPLEMENTED);
+    }
   }
 
   filterPlaces(values: any, currentValues: number[]) {

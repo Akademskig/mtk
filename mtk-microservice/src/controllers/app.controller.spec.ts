@@ -5,8 +5,8 @@ import { AutocompleteQuery } from '../models/autocompleteQuery.model';
 import { Places, PlaceItem, PlaceInfo } from '../models/places.model';
 import { FbService } from '../services/fb.service';
 
-jest.mock('./app.service');
-jest.mock('./services/fb.service');
+jest.mock('../services/app.service');
+jest.mock('../services/fb.service');
 describe('AppController', () => {
   let appController: AppController;
   let appService: AppService;
@@ -40,8 +40,8 @@ describe('AppController', () => {
   describe('getPlaceInfo', () => {
     it('should return a place information data', async () => {
       const res = new PlaceInfo(1, 'praćka');
-      jest.spyOn(fbService, 'getPlaceInfo').mockResolvedValue(Promise.resolve(res));
-      const result = await appController.getPlaceInfo(1);
+      jest.spyOn(appService, 'getPlaceInfo').mockResolvedValue(Promise.resolve(res));
+      const result = await appController.getPlaceInfo(1, 'facebook');
       expect(result).toMatchObject(expect.objectContaining(
         res,
       ));

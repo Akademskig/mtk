@@ -23,13 +23,12 @@ export class AppController {
       }
     }
   }
-  @Get('/api/place_info/:id')
-  async getPlaceInfo(@Param('id', new ParseIntPipe()) id): Promise<any> {
+  @Get('/api/place_info/:type/:id')
+  async getPlaceInfo(@Param('id', new ParseIntPipe()) id, @Param('type') type): Promise<any> {
     try {
-      const r = await this.fbService.getPlaceInfo(id);
+      const r = await this.appService.getPlaceInfo(id, type);
       return r;
     } catch (err) {
-      // tslint:disable-next-line:no-console
       if (err.getResponse) {
         throw new HttpException(err.getResponse(), err.getStatus());
       } else if (err.response && err.response.statusText && err.response.status) {
