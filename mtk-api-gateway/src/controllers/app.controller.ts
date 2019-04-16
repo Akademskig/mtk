@@ -23,7 +23,7 @@ export class AppController {
     } catch (err) {
       if (err.getResponse) {
         throw new HttpException(err.getResponse(), err.getStatus());
-      } else  if (err.response.statusText && err.response.status) {
+      } else if (err.response && err.response.statusText && err.response.status) {
         throw new HttpException(err.response.statusText, err.response.status);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,7 +38,7 @@ export class AppController {
     } catch (err) {
       if (err.getResponse) {
         throw new HttpException(err.getResponse(), err.getStatus());
-      }  else  if (err.response.statusText && err.response.status) {
+      } else if (err.response && err.response.statusText && err.response.status) {
         throw new HttpException(err.response.statusText, err.response.status);
       } else {
         throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
