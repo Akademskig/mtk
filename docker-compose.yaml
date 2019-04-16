@@ -1,0 +1,9 @@
+version: '3'
+services:
+  mtk-api-gateway:
+    build: ./mtk-api-gateway
+    network_mode: host
+  mtk-microservice:
+    build: ./mtk-microservice
+    network_mode: host
+

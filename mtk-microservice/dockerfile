@@ -1,0 +1,15 @@
+FROM node:slim
+
+WORKDIR /usr/src/mtk
+
+COPY package*.json ./
+
+COPY . .
+
+RUN npm install && \
+    npm run prestart:prod
+
+EXPOSE 3001
+CMD [ "npm", "start" ]
+
+
