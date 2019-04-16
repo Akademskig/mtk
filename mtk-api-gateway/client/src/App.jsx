@@ -36,7 +36,7 @@ export default class Client extends React.Component {
   onSelect = async ($e) => {
     let data
     try {
-      data = await fetchPlaceInfo($e)
+      data = await fetchPlaceInfo($e, "facebook")
       if (data.statusCode)
         return
     }
@@ -106,8 +106,9 @@ const fetchProfiles = async (query, currentValues, type) => {
   }).then(r => r.json()).catch(err => { console.error("An error occurred: ", err); throw err })
 }
 
-const fetchPlaceInfo = (id) => {
-  const url = new URL(`http://127.0.0.1:3002/api/place_info/${id}`)
+const fetchPlaceInfo = (id, type) => {
+  const url = new URL(`http://127.0.0.1:3002/api/place_info/${type}/${id}`)
+
   return fetch(url, {
     method: "GET",
     headers: { "Content-Type": "application/json" },

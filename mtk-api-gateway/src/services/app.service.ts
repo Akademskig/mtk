@@ -16,8 +16,8 @@ export class AppService {
     }).toPromise().then(r => r.data).catch(err => { Logger.error(err.message, err.stack, 'AppService - getPlaces', true); throw err; });
 
   }
-  async getPlaceInfo(id: number) {
-    return this.httpService.get(`http://127.0.0.1:3001/api/place_info/${id}`, {
+  async getPlaceInfo(id: number, type: string) {
+    return this.httpService.get(`http://127.0.0.1:3001/api/place_info/${type}/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
